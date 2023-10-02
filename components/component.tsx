@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 export default function Component() {
   const [messages, setMessages] = useState<string[]>([]);
   const moduleHash = "0a363b2a63aadb76a525208f1973531d3616fbae";
-  const ws = new WebSocket("ws://localhost:3000");
+  const ws = new WebSocket("ws://substreams-sink-websockets-production.up.railway.app");
 
   useEffect(() => {
     ws.onopen = () => {
