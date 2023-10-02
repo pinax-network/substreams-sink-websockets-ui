@@ -20,8 +20,9 @@ export default function Component() {
     ws.onmessage = event => {
       const json = JSON.parse(event.data);
       console.log(json);
-      const { message, clock, data} = json;
-      const payload = message ?? `Block: ${clock.number} | Transactions: ${data.transactionTraces}`;
+      const { message, clock, manifest, data } = json;
+      const chain = manifest ? new URL(manifest.substreamsEndpoint).hostname.split(".")[0] : "unknown";
+      const payload = message ?? `${chain.toUpperCase()} | Block: ${clock.number} | Transactions: ${data.transactionTraces}`;
       setMessages((prevMessages) => [...prevMessages, payload]);
     };
   }, [])
