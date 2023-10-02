@@ -23,7 +23,7 @@ export default function Component() {
       const { message, clock, manifest, data } = json;
       const chain = manifest ? new URL(manifest.substreamsEndpoint).hostname.split(".")[0] : "unknown";
       const payload = message ?? `${chain.toUpperCase()} | Block: ${clock.number} | Transactions: ${data.transactionTraces}`;
-      setMessages((prevMessages) => [...prevMessages, payload]);
+      if ( payload ) setMessages((prevMessages) => [...prevMessages, payload]);
     };
   }, [])
 
@@ -38,6 +38,7 @@ export default function Component() {
         <p className="text-sm">Substreams WebSockets</p>
       </div>
       <div className="mt-4 break-normal">
+        <p className="text-white-400">{hostname}</p><br />
         <p className="text-red-400">$ message {"<moduleHash>"}</p>
         <p className="text-green-400">$ {moduleHash}</p>
         {messages.map((message, index) => {
