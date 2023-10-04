@@ -15,14 +15,20 @@ export default function Component() {
 
   useEffect(() => {
     ws.onopen = () => {
-      ws.send(moduleHash);
+      ws.send(JSON.stringify({
+        id: Math.floor(Math.random() * 1000),
+        method: "subscribe",
+        params: {
+            moduleHash
+        }
+    }));
     };
     ws.onmessage = event => {
       const json = JSON.parse(event.data);
       console.log(json);
       const { message, clock, manifest, data } = json;
-      const chain = manifest ? new URL(manifest.substreamsEndpoint).hostname.split(".")[0] : "unknown";
-      const payload = message ?? `${chain.toUpperCase()} | Block: ${clock.number} | Transactions: ${data.transactionTraces}`;
+      const chain = manifest?.chain;
+      const payload = message ?? `${chain} | Block: ${clock.number} | Transactions: ${data.transactionTraces}`;
       if ( payload ) setMessages((prevMessages) => [...prevMessages, payload]);
     };
   }, [])
